@@ -8,7 +8,6 @@ import KadDHT from 'libp2p-kad-dht';
 import MPLEX from 'libp2p-mplex';
 import {NOISE} from 'libp2p-noise';
 import filters from 'libp2p-websockets/src/filters';
-import {Multiaddr} from 'multiaddr';
 import Gossipsub from 'libp2p-gossipsub'
 
 import $ from 'jquery';
@@ -27,7 +26,7 @@ const main = async()=>{
             transport: [WS,WebRTCStar,WebSocketStar],
             streamMuxer: [MPLEX],
             connEncryption: [NOISE],
-            peerDiscovery:[/*WebRTCStar.discover,WebSocketStar.discover,*/Bootstrap], // discoverの代替案を考える
+            peerDiscovery:[Bootstrap],
             dht: KadDHT,
             pubsub: Gossipsub
         },
@@ -47,11 +46,6 @@ const main = async()=>{
     await node.start();
 
     const pubsubCanvas = new PubsubCanvas(node,TOPIC);
-
-    const targetAddr = new Multiaddr('/ip4/127.0.0.1/tcp/63586/ws/p2p/QmUBwCedZr52pm1mWEyqYDHr6NHdSaXqnKq1Z8W8T6ytpd')
-
-    const latency = await node.ping(targetAddr)
-    console.log(`latency is ${latency}`);
 
     /** @type HTMLCanvasElement  */
     const cnvs = document.getElementById('canvas');
@@ -97,26 +91,9 @@ const main = async()=>{
     $('#clear').click(()=>{
         ctx.clearRect(0,0,cnvWidth,cnvHeight);
     })
-    let imageData =undefined;
-    $('#save').click(()=>{
-        imageData=JSON.stringify(ctx.getImageData(0,0,cnvWidth,cnvHeight))
-        console.log(imageData);
-    })
-
-    $('#load').click(()=>{
-        ctx.putImageData(JSON.parse(imageData),0,0);
-    })
 
     pubsubCanvas.on('canvas:operate:doing',({oldX,oldY,nextX,nextY})=>{
-        console.log(oldY)
         drawLine(oldX,oldY,nextX,nextY);
-    })
-
-
-    document.addEventListener('click',()=>{
-        node.peerStore.peers.forEach(async(data)=>{
-            console.log(data.id.toB58String());
-        })
     })
 
     document.addEventListener('close',async()=>{

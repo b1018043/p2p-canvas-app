@@ -1,6 +1,4 @@
 import protons from "protons";
-// import uint8arrayFromString from 'uint8arrays/from-string';
-// import uint8arrayToString from 'uint8arrays/to-string';
 
 import EventEmitter from 'events';
 
@@ -83,11 +81,6 @@ class PubsubCanvas extends EventEmitter{
             const request = Request.decode(mes.data);
             switch(request.type){
                 case Request.Type.START_CANVAS_OPERATE:
-                    // this.emit('canvas:operate:start',{
-                    //     id: mes.from,
-                    //     startX: request.startCanvasOperate.startX,
-                    //     startY: request.startCanvasOperate.startY,
-                    // })
                     this.userHandles.set(
                         mes.from,
                         {
@@ -97,13 +90,9 @@ class PubsubCanvas extends EventEmitter{
                     )
                     break;
                 case Request.Type.END_CANVAS_OPERATE:
-                    // this.emit('canvas:operate:end',{
-                    //     id: mes.from
-                    // })
                     this.userHandles.delete(mes.from)
                     break;
                 case Request.Type.DOING_CANVAS_OPERATE:
-                    console.log(this.userHandles)
                     if(!this.userHandles.has(mes.from)) return;
                     this.emit('canvas:operate:doing',{
                         id: mes.from,
@@ -182,6 +171,3 @@ class PubsubCanvas extends EventEmitter{
 
 export default PubsubCanvas;
 export const TOPIC = 'osslab/demo/canvas/1.0.0';
-
-// module.exports = PubsubCanvas;
-// module.exports.TOPIC = 'osslab/demo/canvas/1.0.0';
