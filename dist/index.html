@@ -12,15 +12,6 @@
                 width: 20px;
                 height: 20px;
             }
-            .black{
-                background-color: #000000;
-            }
-            .red{
-                background-color: #ff0000;
-            }
-            .blue{
-                background-color: #0000ff;
-            }
         </style>
     </head>
     <body>
@@ -39,6 +30,15 @@
             <a href="" class="large" data-bold="10">大</a>
             </div>
         </div> -->
+        <label for="color">ペンの色</label>
+        <input type="color" value="#000" id="color">
+        <select id="pen-bold">
+            <option value="1">1px</option>
+            <option value="3">2px</option>
+            <option value="5" selected>5px</option>
+            <option value="7">7px</option>
+            <option value="10">10px</option>    
+        </select>
         <input type="button" value="clear" id="clear">
         <a id="download" href="#" download="canvas.jpg">ダウンロード</a>
         <div id="result"><img src=""></div>

@@ -53,7 +53,7 @@ const main = async()=>{
 
     const cnvWidth = 500;
     const cnvHeight = 500;
-    let cnvColor = "0, 0, 0, 1";
+    let cnvColor = "#000";
     let cnvBold = 5;
     let clickFlag = 0;
 
@@ -68,18 +68,18 @@ const main = async()=>{
         clickFlag = 0;
     }).mousemove(async(e)=>{
         if(!clickFlag) return false;
-        drawLine(oldX,oldY,e.offsetX,e.offsetY);
-        pubsubCanvas.sendDrawCanvasOperate(oldX,oldY,e.offsetX,e.offsetY);
+        drawLine(oldX,oldY,e.offsetX,e.offsetY,cnvColor,cnvBold);
+        pubsubCanvas.sendDrawCanvasOperate(oldX,oldY,e.offsetX,e.offsetY,cnvColor,cnvBold);
         oldX = e.offsetX;
         oldY = e.offsetY;
     });
 
-    function drawLine(stPointX,stPointY, endPointX,endPointY){
+    function drawLine(stPointX,stPointY, endPointX,endPointY,color="#000",bold=5){
         ctx.beginPath();
         ctx.moveTo(stPointX,stPointY);
         ctx.lineTo(endPointX,endPointY);
-        ctx.strokeStyle = `rgba(${cnvColor})`;
-        ctx.lineWidth = cnvBold;
+        ctx.strokeStyle = color;
+        ctx.lineWidth = bold;
         ctx.lineCap = 'round';
         ctx.stroke();
         ctx.closePath();
@@ -89,8 +89,21 @@ const main = async()=>{
         ctx.clearRect(0,0,cnvWidth,cnvHeight);
     })
 
-    pubsubCanvas.on('canvas:operate:draw',({oldX,oldY,nextX,nextY})=>{
-        drawLine(oldX,oldY,nextX,nextY);
+    pubsubCanvas.on('canvas:operate:draw',({oldX,oldY,nextX,nextY,color,bold})=>{
+        if(!color) return;
+        drawLine(oldX,oldY,nextX,nextY,color,bold);
+    })
+
+    $('#color').change(()=>{
+        cnvColor = $('#color').val()
+        return false;
+    })
+
+    $('#pen-bold').change(()=>{
+        const newBold = Number($('#pen-bold').val());
+        if(isNaN(newBold)) return false;
+        cnvBold = newBold;
+        return false;
     })
 
     document.addEventListener('close',async()=>{

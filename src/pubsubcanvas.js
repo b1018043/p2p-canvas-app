@@ -1,5 +1,8 @@
 import protons from "protons";
 
+import uint8arrayFromString from 'uint8arrays/from-string';
+import uint8arrayToString from 'uint8arrays/to-string';
+
 import EventEmitter from 'events';
 
 /**
@@ -21,6 +24,8 @@ message DrawCanvasOperate{
     required int64 oldY = 2;
     required int64 nextX = 3;
     required int64 nextY = 4;
+    required bytes color = 5;
+    required int64 bold = 6;
 }
 `);
 
@@ -74,7 +79,9 @@ class PubsubCanvas extends EventEmitter{
                         oldX: request.drawCanvasOperate.oldX,
                         oldY: request.drawCanvasOperate.oldY,
                         nextX: request.drawCanvasOperate.nextX,
-                        nextY: request.drawCanvasOperate.nextY
+                        nextY: request.drawCanvasOperate.nextY,
+                        color: uint8arrayToString(request.drawCanvasOperate.color),
+                        bold: request.drawCanvasOperate.bold,
                     })
                     break;
                 default:
@@ -91,12 +98,16 @@ class PubsubCanvas extends EventEmitter{
      * @param {number} oldY 移動前のY座標
      * @param {number} nextX 移動後のX座標
      * @param {number} nextY 移動後のY座標
+     * @param {string} color 線の色
+     * @param {number} bold 線の太さ
      */
-    async sendDrawCanvasOperate(oldX,oldY,nextX,nextY){
+    async sendDrawCanvasOperate(oldX,oldY,nextX,nextY,color="#000",bold=5){
         const mes = Request.encode({
             type: Request.Type.DRAW_CANVAS_OPERATE,
             drawCanvasOperate:{
-                oldX,oldY,nextX,nextY
+                oldX,oldY,nextX,nextY,
+                color: uint8arrayFromString(color),
+                bold
             }
         });
 
