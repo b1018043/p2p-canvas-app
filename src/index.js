@@ -64,15 +64,16 @@ const main = async()=>{
         clickFlag = 1;
         oldX = e.offsetX;
         oldY = e.offsetY;
-        pubsubCanvas.sendStartCanvasOperateRequest(oldX,oldY);
+        // pubsubCanvas.sendStartCanvasOperateRequest(oldX,oldY);
     }).mouseup(async()=>{
         clickFlag = 0;
-        pubsubCanvas.sendEndCanvasOperateRequest();
+        // pubsubCanvas.sendEndCanvasOperateRequest();
     }).mousemove(async(e)=>{
         if(!clickFlag) return false;
         drawLine(oldX,oldY,e.offsetX,e.offsetY);
         // NOTE: もっと簡潔に処理かけそう startとendの消去
-        pubsubCanvas.sendDoingCanvasOperate(e.offsetX,e.offsetY);
+        // pubsubCanvas.sendDoingCanvasOperate(e.offsetX,e.offsetY);
+        pubsubCanvas.sendDrawCanvasOperate(oldX,oldY,e.offsetX,e.offsetY);
         oldX = e.offsetX;
         oldY = e.offsetY;
     });
@@ -92,7 +93,11 @@ const main = async()=>{
         ctx.clearRect(0,0,cnvWidth,cnvHeight);
     })
 
-    pubsubCanvas.on('canvas:operate:doing',({oldX,oldY,nextX,nextY})=>{
+    // pubsubCanvas.on('canvas:operate:doing',({oldX,oldY,nextX,nextY})=>{
+    //     drawLine(oldX,oldY,nextX,nextY);
+    // })
+
+    pubsubCanvas.on('canvas:operate:draw',({oldX,oldY,nextX,nextY})=>{
         drawLine(oldX,oldY,nextX,nextY);
     })
 

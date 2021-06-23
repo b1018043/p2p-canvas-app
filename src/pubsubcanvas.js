@@ -12,11 +12,13 @@ message Request{
         START_CANVAS_OPERATE = 0;
         END_CANVAS_OPERATE = 1;
         DOING_CANVAS_OPERATE = 2;
+        DRAW_CANVAS_OPERATE = 3;
     }
 
     required Type type = 1;
     optional StartCanvasOperate startCanvasOperate = 2;
     optional DoingCanvasOperate doingCanvasOperate = 3;
+    optional DrawCanvasOperate drawCanvasOperate = 4;
 }
 
 message StartCanvasOperate{
@@ -28,6 +30,14 @@ message DoingCanvasOperate{
     required int64 nextX = 1;
     required int64 nextY = 2;
 }
+
+message DrawCanvasOperate{
+    required int64 oldX = 1;
+    required int64 oldY = 2;
+    required int64 nextX = 3;
+    required int64 nextY = 4;
+}
+
 `);
 
 class PubsubCanvas extends EventEmitter{
@@ -106,6 +116,14 @@ class PubsubCanvas extends EventEmitter{
                         oldY: request.doingCanvasOperate.nextY,
                     })
                     break;
+                case Request.Type.DRAW_CANVAS_OPERATE:
+                    this.emit('canvas:operate:draw',{
+                        oldX: request.drawCanvasOperate.oldX,
+                        oldY: request.drawCanvasOperate.oldY,
+                        nextX: request.drawCanvasOperate.nextX,
+                        nextY: request.drawCanvasOperate.nextY
+                    })
+                    break;
                 default:
                     break;
             }
@@ -164,6 +182,28 @@ class PubsubCanvas extends EventEmitter{
             await this.node.pubsub.publish(this.topic,mes);
         } catch (err) {
             console.error(err);
+        }
+    }
+
+    /**
+     * canvas入力時の処理
+     * @param {number} oldX 移動前のX座標 
+     * @param {number} oldY 移動前のY座標
+     * @param {number} nextX 移動後のX座標
+     * @param {number} nextY 移動後のY座標
+     */
+    async sendDrawCanvasOperate(oldX,oldY,nextX,nextY){
+        const mes = Request.encode({
+            type: Request.Type.DRAW_CANVAS_OPERATE,
+            drawCanvasOperate:{
+                oldX,oldY,nextX,nextY
+            }
+        });
+
+        try {
+            await this.node.pubsub.publish(this.topic,mes);
+        } catch (error) {
+            console.error(error);
         }
     }
 }
