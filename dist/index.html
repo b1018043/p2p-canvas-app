@@ -16,20 +16,6 @@
     </head>
     <body>
         <canvas id="canvas" width="500" height="300" style="border: solid 1px #000;box-sizing: border-box;"></canvas>
-        <!-- <div class="option">
-            <div class="color">
-            色：
-            <a href="" class="black" data-color="0, 0, 0, 1"></a>
-            <a href="" class="red" data-color="255, 0, 0, 1"></a>
-            <a href="" class="blue" data-color="0, 0, 255, 1"></a>
-            </div>
-            <div class="bold">
-            太さ：
-            <a href="" class="small" data-bold="1">小</a>
-            <a href="" class="middle" data-bold="5">中</a>
-            <a href="" class="large" data-bold="10">大</a>
-            </div>
-        </div> -->
         <label for="color">ペンの色</label>
         <input type="color" value="#000" id="color">
         <select id="pen-bold">
@@ -40,7 +26,7 @@
             <option value="10">10px</option>    
         </select>
         <input type="button" value="clear" id="clear">
-        <a id="download" href="#" download="canvas.jpg">ダウンロード</a>
+        <!-- <a id="download" href="#" download="canvas.jpg">ダウンロード</a> -->
         <div id="result"><img src=""></div>
         <script src="main.js"></script>
     </body>

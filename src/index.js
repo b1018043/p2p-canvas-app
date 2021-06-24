@@ -91,6 +91,7 @@ const main = async()=>{
 
     pubsubCanvas.on('canvas:operate:draw',({oldX,oldY,nextX,nextY,color,bold})=>{
         if(!color) return;
+        if(!bold) return;
         drawLine(oldX,oldY,nextX,nextY,color,bold);
     })
 
