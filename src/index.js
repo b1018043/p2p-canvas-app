@@ -64,11 +64,11 @@ const main = async()=>{
     let oldY=0;
 
     $('#canvas').mousedown(async(e)=>{
-        clickFlag = 1;
+        clickFlag = true;
         oldX = e.offsetX;
         oldY = e.offsetY;
     }).mouseup(async()=>{
-        clickFlag = 0;
+        clickFlag = false;
     }).mousemove(async(e)=>{
         if(!clickFlag) return false;
         drawLine(oldX,oldY,e.offsetX,e.offsetY,cnvColor,cnvBold);
