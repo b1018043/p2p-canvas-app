@@ -20,7 +20,7 @@ const main = async()=>{
 
     const node = await Libp2p.create({
         addresses:{
-            listen: ['/ip4/127.0.0.1/tcp/15555/ws/p2p-webrtc-star']
+            listen: ['/ip4/0.0.0.0/tcp/15555/ws/p2p-webrtc-star']
         },
         modules:{
             transport: [WS,WebRTCStar,WebSocketStar],
@@ -34,7 +34,9 @@ const main = async()=>{
             peerDiscovery:{
                 bootstrap:{
                     // NOTE: listの内容は状況に応じて書き換える
-                    list:['/ip4/127.0.0.1/tcp/63586/ws/p2p/QmUBwCedZr52pm1mWEyqYDHr6NHdSaXqnKq1Z8W8T6ytpd']
+                    list:[
+                        '/ip4/127.0.0.1/tcp/63586/ws/p2p/QmUBwCedZr52pm1mWEyqYDHr6NHdSaXqnKq1Z8W8T6ytpd'
+                    ]
                 }
             },
             transport:{
