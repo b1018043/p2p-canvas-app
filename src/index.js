@@ -34,6 +34,7 @@ const main = async()=>{
             peerDiscovery:{
                 bootstrap:{
                     // NOTE: listの内容は状況に応じて書き換える
+                    // TODO: IDとかIPアドレスの部分はいずれは.envから読み込めるようにしたい…
                     list:[
                         '/ip4/127.0.0.1/tcp/63586/ws/p2p/QmUBwCedZr52pm1mWEyqYDHr6NHdSaXqnKq1Z8W8T6ytpd'
                     ]
